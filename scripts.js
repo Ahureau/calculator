@@ -1,3 +1,5 @@
+// Globals
+
 // Memory
 
 let currentInput = null;
@@ -8,8 +10,10 @@ let result = null;
 
 // Display
 
-let lineOne = document.getElementById("lineOne");
-let lineTwo = document.getElementById("lineTwo");
+const lineOne = document.getElementById("lineOne");
+const lineTwo = document.getElementById("lineTwo");
+
+
 
 // Buttons
 
@@ -43,12 +47,14 @@ let whatButton = (button) => {
     }
 }
 
+
+
 // Operators
 
-let add = (a, b) => a + b;
-let substract = (a, b) => a - b;
-let divide = (a , b) => a / b;
-let multiply = (a, b) => a * b;
+let add = (a, b) => Number(a) + Number(b);
+let substract = (a, b) => Number(a) - Number(b);
+let divide = (a , b) => Number(a) / Number(b);
+let multiply = (a, b) => Number(a) * Number(b);
 
 let plusMinus = (input) => {
     if (Number(input) === Math.abs(input)) {
@@ -61,21 +67,77 @@ let plusMinus = (input) => {
 // Operator functions
 
 // Check if operating on new values
-let operateEmpty = () => {return operatorInput ? true : false};
+let operateEmpty = () => {return !operatorInput ? true : false};
 
 // Check if updating operator
 let operateUpdate = () => {
-    return (previousInput === null && operatorInput != null) ? true : false;}
+    return (previousInput === null && operatorInput != null) ? true : false;
+}
 
 // Check if operating on existing result
 let operateResult = () => {return gaveResult};
 
+// Check operators function
+let operateStatus = () => {
+    let status;
+    if (operateEmpty()) {
+        status = "empty"
+    } else if (operateUpdate()) {
+        status = "update"
+    } else if (operateResult()) {
+        status = "result"
+    }
+    return status;
+}
+
 // Apply operators
 let operateSet = (operator) => {
-    operatorInput = operator.textContent;
-    if (lineOne.textContent == "") {
-        previousInput = `${lineTwo.textContent} ${operatorInput}`;
-        lineOne.textContent = previousInput;
+    switch (operateStatus()){
+        case "empty":
+            operatorInput = operator;
+            previousInput = lineTwo.textContent;
+            lineOne.textContent += `${lineTwo.textContent} ${operator}`;
+            lineTwo.textContent = "";
+            break;
+        case "update":
+            console.log("update");
+            break;
+        case "result":
+            console.log("result");
+            break;
+    }
+}
+
+
+// Decides which operation to run
+let whichCalculation = (operator) => {return operator};
+
+// Calculates the result
+let calculateResult = () => {
+    currentInput = lineTwo.textContent;
+    lineOne.textContent += ` ${currentInput} =`;
+    lineTwo.textContent = "not firing";
+    switch (whichCalculation(operatorInput)) {
+        case "+":
+            result = add(previousInput, currentInput);
+            lineTwo.textContent = result;
+            gaveResult = true;
+            break;
+        case "-":
+            lineTwo.textContent = substract(previousInput, currentInput);
+            result = lineTwo.textContent;
+            gaveResult = true;
+            break;
+        case "÷":
+            lineTwo.textContent = divide(previousInput, currentInput);
+            result = lineTwo.textContent;
+            gaveResult = true;
+            break;
+        case "×":
+            lineTwo.textContent = multiply(previousInput, currentInput);
+            result = lineTwo.textContent;
+            gaveResult = true;
+            break;
     }
 }
 
@@ -90,6 +152,8 @@ let allClear = () => {
     lineTwo.textContent = "";
 }
 
+
+
 // Adds functions to buttons
 const buttons = Array.from(document.querySelectorAll("button"));
 
@@ -100,7 +164,7 @@ buttons.forEach(button => {
                 lineTwo.textContent += button.textContent;
                 break;
             case "operator":
-                operateSet(button);
+                operateSet(button.textContent);
                 break;
             case "plusMinus":
                 lineTwo.textContent = plusMinus(lineTwo.textContent);
@@ -109,7 +173,7 @@ buttons.forEach(button => {
                 allClear();
                 break;
             case "isEqual":
-                console.log("=");
+                calculateResult();
                 break;
         }        
     });
