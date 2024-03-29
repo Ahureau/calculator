@@ -74,12 +74,6 @@ let operateUpdate = () => {
     return (lineTwo.textContent === "" && previousInput != "" && operatorInput != "") ? true : false;
 }
 
-// Check if operating on existing result
-let operateResult = () => {return !gaveResult};
-
-// Checks if there's a previous and current input
-// SOON(tm)
-
 // Check operators function
 let operateStatus = () => {
     let status;
@@ -107,9 +101,8 @@ let operateSet = (operator) => {
             lineOne.textContent = `${previousInput} ${operatorInput}`;
             break;
         case "result":
-            currentInput = result;
-            lineOne
             calculateResult();
+            lineOne.textContent = `${result} ${operator}`;
             currentInput = "";
             previousInput = result;
             result = "";
@@ -185,7 +178,9 @@ buttons.forEach(button => {
                 allClear();
                 break;
             case "isEqual":
-                calculateResult();
+                if (lineTwo.textContent != "" && previousInput != ""){
+                    calculateResult();
+                }
                 break;
         }        
     });
