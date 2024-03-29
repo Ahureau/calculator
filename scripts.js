@@ -2,11 +2,11 @@
 
 // Memory
 
-let currentInput = null;
-let previousInput = null;
-let operatorInput = null;
+let currentInput = "";
+let previousInput = "";
+let operatorInput = "";
 let gaveResult = false;
-let result = null;
+let result = "";
 
 // Display
 
@@ -67,25 +67,28 @@ let plusMinus = (input) => {
 // Operator functions
 
 // Check if operating on new values
-let operateEmpty = () => {return !operatorInput ? true : false};
+let operateEmpty = () => {return operatorInput === "" ? true : false};
 
 // Check if updating operator
 let operateUpdate = () => {
-    return (previousInput === null && operatorInput != null) ? true : false;
+    return (lineTwo.textContent === "" && previousInput != "" && operatorInput != "") ? true : false;
 }
 
 // Check if operating on existing result
-let operateResult = () => {return gaveResult};
+let operateResult = () => {return !gaveResult};
+
+// Checks if there's a previous and current input
+// SOON(tm)
 
 // Check operators function
 let operateStatus = () => {
     let status;
     if (operateEmpty()) {
-        status = "empty"
+        status = "empty";
     } else if (operateUpdate()) {
-        status = "update"
-    } else if (operateResult()) {
-        status = "result"
+        status = "update";
+    } else {
+        status = "result";
     }
     return status;
 }
@@ -100,10 +103,17 @@ let operateSet = (operator) => {
             lineTwo.textContent = "";
             break;
         case "update":
-            console.log("update");
+            operatorInput = operator;
+            lineOne.textContent = `${previousInput} ${operatorInput}`;
             break;
         case "result":
-            console.log("result");
+            currentInput = result;
+            lineOne
+            calculateResult();
+            currentInput = "";
+            previousInput = result;
+            result = "";
+            operatorInput = operator;
             break;
     }
 }
@@ -112,42 +122,44 @@ let operateSet = (operator) => {
 // Decides which operation to run
 let whichCalculation = (operator) => {return operator};
 
+// Update result line
+let resultLineUpdate = () => {
+    lineOne.textContent = `${previousInput} ${operatorInput} ${currentInput} = ${result}`;
+    gaveResult = true;
+}
+
 // Calculates the result
 let calculateResult = () => {
     currentInput = lineTwo.textContent;
+    lineTwo.textContent = "";
     lineOne.textContent += ` ${currentInput} =`;
-    lineTwo.textContent = "not firing";
     switch (whichCalculation(operatorInput)) {
         case "+":
             result = add(previousInput, currentInput);
-            lineTwo.textContent = result;
-            gaveResult = true;
+            resultLineUpdate();
             break;
         case "-":
-            lineTwo.textContent = substract(previousInput, currentInput);
-            result = lineTwo.textContent;
-            gaveResult = true;
+            result = substract(previousInput, currentInput);
+            resultLineUpdate();
             break;
         case "÷":
-            lineTwo.textContent = divide(previousInput, currentInput);
-            result = lineTwo.textContent;
-            gaveResult = true;
+            result = divide(previousInput, currentInput);
+            resultLineUpdate();
             break;
         case "×":
-            lineTwo.textContent = multiply(previousInput, currentInput);
-            result = lineTwo.textContent;
-            gaveResult = true;
+            result = multiply(previousInput, currentInput);
+            resultLineUpdate();
             break;
     }
 }
 
 // Apply AC
 let allClear = () => {
-    currentInput = null;
-    previousInput = null;
-    operatorInput = null;
-    let gaveResult = false;
-    let result = null;
+    currentInput = "";
+    previousInput = "";
+    operatorInput = "";
+    gaveResult = false;
+    result = "";
     lineOne.textContent = "";
     lineTwo.textContent = "";
 }
@@ -178,7 +190,3 @@ buttons.forEach(button => {
         }        
     });
 });
-
-// if (lineOne.textContent == "" && isValue(button)) {
-//     lineTwo.textContent += `${button.textContent}`;
-// }
