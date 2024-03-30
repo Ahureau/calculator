@@ -39,7 +39,10 @@ button {
 
 .displayText {
     display: flex;
-    height: 15px;
+    height: 45px;
+    margin: 0px;
+    text-align: end;
+    overflow-x: hidden;
     align-items: center;
     justify-content: flex-end;
 }
