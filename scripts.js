@@ -113,17 +113,25 @@ let operateSet = (operator) => {
 }
 
 
+
+// Calculate the result
+
 // Decides which operation to run
 let whichCalculation = (operator) => {return operator};
 
 // Update result line
 let resultLineUpdate = () => {
     lineOne.textContent = `${previousInput} ${operatorInput} ${currentInput} = ${result}`;
+    if (lineOne.textContent.length > 20) {lineOne.textContent = result};
     previousInput = result;
     gaveResult = true;
 }
 
-// Calculates the result
+// If the result is too long
+let resultToExponential = () => {
+    if (result.length > 15) {result = result.toExponential()};
+}
+
 let calculateResult = () => {
     currentInput = lineTwo.textContent;
     lineTwo.textContent = "";
@@ -131,19 +139,22 @@ let calculateResult = () => {
     switch (whichCalculation(operatorInput)) {
         case "+":
             result = add(previousInput, currentInput);
+            resultToExponential()
             resultLineUpdate();
             break;
         case "-":
             result = substract(previousInput, currentInput);
-            if (result.length > 15) {result = result.toExponential()};
+            resultToExponential();
             resultLineUpdate();
             break;
         case "÷":
             result = divide(previousInput, currentInput);
+            resultToExponential()
             resultLineUpdate();
             break;
         case "×":
             result = multiply(previousInput, currentInput);
+            resultToExponential()
             resultLineUpdate();
             break;
     }
