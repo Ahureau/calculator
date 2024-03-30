@@ -172,7 +172,6 @@ let allClear = () => {
 }
 
 
-
 // Adds functions to buttons
 const isFirstPeriod = () => {
     if (lineTwo.textContent === "") {lineTwo.textContent = `0.`};
@@ -189,7 +188,10 @@ buttons.forEach(button => {
     button.addEventListener("click", () => {
         switch (whatButton(button)) {
             case "value":
-                if (button.textContent === ".") {
+                if (gaveResult === true && lineOne.textContent.includes(result)) {
+                    allClear();
+                    lineTwo.textContent = button.textContent;
+                } else if (button.textContent === ".") {
                     isFirstPeriod();
                 } else if (button.textContent === "0") {
                     isFirstZero();
