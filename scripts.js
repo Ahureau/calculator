@@ -103,11 +103,11 @@ let operateSet = (operator) => {
             break;
         case "result":
             calculateResult();
+            operatorInput = operator;
             lineOne.textContent = `${result} ${operator}`;
             currentInput = "";
             previousInput = result;
             result = "";
-            operatorInput = operator;
             break;
     }
 }
