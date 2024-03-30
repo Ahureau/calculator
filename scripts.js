@@ -23,11 +23,6 @@ const isValue = (input) => {
     return values.includes(input.id.toString()) ? input.id : false;
 };
 
-const isFirstPeriod = () => {
-    if (lineTwo.textContent === "") {lineTwo.textContent = `0.`};
-    if (!lineTwo.textContent.includes(".")) {lineTwo.textContent += "."};
-};
-
 const isOperator = (input) => {
     const values = ["substract", "add", "multiply", "divide"];
     return values.includes(input.id.toString()) ? input.id : false;
@@ -124,6 +119,7 @@ let whichCalculation = (operator) => {return operator};
 // Update result line
 let resultLineUpdate = () => {
     lineOne.textContent = `${previousInput} ${operatorInput} ${currentInput} = ${result}`;
+    previousInput = result;
     gaveResult = true;
 }
 
@@ -139,6 +135,7 @@ let calculateResult = () => {
             break;
         case "-":
             result = substract(previousInput, currentInput);
+            if (result.length > 15) {result = result.toExponential()};
             resultLineUpdate();
             break;
         case "÷":
@@ -166,6 +163,15 @@ let allClear = () => {
 
 
 // Adds functions to buttons
+const isFirstPeriod = () => {
+    if (lineTwo.textContent === "") {lineTwo.textContent = `0.`};
+    if (!lineTwo.textContent.includes(".")) {lineTwo.textContent += "."};
+};
+
+const isFirstZero = () => {
+    if (lineTwo.textContent != "0") {lineTwo.textContent += "0"}
+}
+
 const buttons = Array.from(document.querySelectorAll("button"));
 
 buttons.forEach(button => {
@@ -174,15 +180,22 @@ buttons.forEach(button => {
             case "value":
                 if (button.textContent === ".") {
                     isFirstPeriod();
+                } else if (button.textContent === "0") {
+                    isFirstZero();
                 } else {
                 lineTwo.textContent += button.textContent;
                 }
                 break;
             case "operator":
-                operateSet(button.textContent);
+                if (lineTwo.textContent != ""){
+                    operateSet(button.textContent);
+                }
                 break;
             case "plusMinus":
-                lineTwo.textContent = plusMinus(lineTwo.textContent);
+                const invalid = ["", "0", "0."];
+                if (!invalid.includes(lineTwo.textContent)) {
+                    lineTwo.textContent = plusMinus(lineTwo.textContent)
+                }
                 break;
             case "ac":
                 allClear();
