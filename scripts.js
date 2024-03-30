@@ -23,6 +23,11 @@ const isValue = (input) => {
     return values.includes(input.id.toString()) ? input.id : false;
 };
 
+const isFirstPeriod = () => {
+    if (lineTwo.textContent === "") {lineTwo.textContent = `0.`};
+    if (!lineTwo.textContent.includes(".")) {lineTwo.textContent += "."};
+};
+
 const isOperator = (input) => {
     const values = ["substract", "add", "multiply", "divide"];
     return values.includes(input.id.toString()) ? input.id : false;
@@ -51,6 +56,7 @@ let whatButton = (button) => {
 
 // Operators
 
+// Operations
 let add = (a, b) => Number(a) + Number(b);
 let substract = (a, b) => Number(a) - Number(b);
 let divide = (a , b) => Number(a) / Number(b);
@@ -166,7 +172,11 @@ buttons.forEach(button => {
     button.addEventListener("click", () => {
         switch (whatButton(button)) {
             case "value":
+                if (button.textContent === ".") {
+                    isFirstPeriod();
+                } else {
                 lineTwo.textContent += button.textContent;
+                }
                 break;
             case "operator":
                 operateSet(button.textContent);
