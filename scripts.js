@@ -204,8 +204,9 @@ buttons.forEach(button => {
                 }
                 break;
             case "operator":
-                if (lineTwo.textContent != "" || gaveResult === true || lineOne.textContent === (`${previousInput} ${operatorInput}`));
+                if (lineTwo.textContent != "" || gaveResult === true || lineOne.textContent === `${previousInput} ${operatorInput}`) {
                     operateSet(button.textContent);
+                }
                 break;
             case "plusMinus":
                 const invalid = ["", "0", "0."];
