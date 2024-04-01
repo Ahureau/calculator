@@ -141,6 +141,7 @@ let calculateResult = () => {
             result = add(previousInput, currentInput);
             resultToExponential()
             resultLineUpdate();
+            previousInput = result;
             break;
         case "-":
             result = substract(previousInput, currentInput);
@@ -173,11 +174,14 @@ let allClear = () => {
 
 
 // Adds functions to buttons
+
+// Makes sure you can only have one period per number.
 const isFirstPeriod = () => {
     if (lineTwo.textContent === "") {lineTwo.textContent = `0.`};
     if (!lineTwo.textContent.includes(".")) {lineTwo.textContent += "."};
 };
 
+// Lets user add a 0 as first number, but not more.
 const isFirstZero = () => {
     if (lineTwo.textContent != "0") {lineTwo.textContent += "0"}
 }
@@ -188,7 +192,7 @@ buttons.forEach(button => {
     button.addEventListener("click", () => {
         switch (whatButton(button)) {
             case "value":
-                if (gaveResult === true && lineOne.textContent.includes(result)) {
+                if (gaveResult === true && lineOne.textContent.includes(result) && !lineOne.textContent.includes(`${previousInput} ${operatorInput}`)) {
                     allClear();
                     lineTwo.textContent = button.textContent;
                 } else if (button.textContent === ".") {
@@ -200,7 +204,7 @@ buttons.forEach(button => {
                 }
                 break;
             case "operator":
-                if (lineTwo.textContent != ""){
+                if (lineTwo.textContent != ""  || gaveResult === true){
                     operateSet(button.textContent);
                 }
                 break;
