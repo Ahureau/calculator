@@ -6,7 +6,7 @@ body {
     min-height: fit-content;
     min-width: fit-content;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: larger;
+    font-size: 24px;
 }
 
 main {
@@ -20,13 +20,14 @@ main {
 
 button {
     display: flex;
-    font-size: larger;
+    font-size: 24px;
     align-items: center;
     justify-content: center;
     width: 80px;
     height: 80px;
     border: 0;
     opacity: 1;
+    border: 0.5px solid black;
 }
 
 button:hover {
@@ -55,7 +56,7 @@ button:active {
     justify-content: flex-end;
 }
 
-#buttons {;
+#buttons {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -97,10 +98,22 @@ button:active {
     flex: 2 1 130px;
 }
 
-#ac{
+.largeButtons.number {
+    border-radius: 0 0 0 10px;
+}
+
+.largeButtons.operation {
+    border-radius: 0 0 10px 0;
+}
+
+.other {
     background-color: rgb(130, 130, 130);
 }
 
 .operation {
-    background-color: orange;
+    background-color: rgb(255, 182, 45);
+}
+
+.number {
+    background-color: rgb(176, 176, 176);
 }
